@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Live Collab</title>
+  <link rel="stylesheet" href="style.css">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <!-- Login Screen -->
+  <div id="login-container">
+    <div id="login-box">
+      <div class="login-header">
+        <div class="logo">
+          <i class="fas fa-users"></i>
+          <h1>Live Collab</h1>
+        </div>
+        <p class="tagline">Real-time collaborative document editing</p>
+      </div>
+      
+      <div class="login-form">
+        <div class="input-group">
+          <i class="fas fa-user"></i>
+          <input type="text" id="username" placeholder="Enter your name..." maxlength="20" />
+        </div>
+        <button class="join-btn" onclick="join()">
+          <span>Join Workspace</span>
+          <i class="fas fa-arrow-right"></i>
+        </button>
+      </div>
+      
+      <div class="features">
+        <div class="feature">
+          <i class="fas fa-bolt"></i>
+          <span>Real-time sync</span>
+        </div>
+        <div class="feature">
+          <i class="fas fa-users"></i>
+          <span>Multi-user</span>
+        </div>
+        <div class="feature">
+          <i class="fas fa-save"></i>
+          <span>Auto-save</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Editor Interface -->
+  <div id="editor-container" style="display:none;">
+    <!-- Header -->
+    <header id="top-header">
+      <div class="header-left">
+        <div class="logo-small">
+          <i class="fas fa-users"></i>
+          <span>Live Collab</span>
+        </div>
+        <div class="doc-title-container">
+          <i class="fas fa-file-alt"></i>
+          <input id="doc-title" value="Untitled Document" maxlength="50" />
+          <div class="auto-save-indicator">
+            <i class="fas fa-check-circle"></i>
+            <span>Saved</span>
+          </div>
+        </div>
+      </div>
+      
+      <div class="header-right">
+        <div class="user-info">
+          <div class="user-avatar">
+            <i class="fas fa-user"></i>
+          </div>
+          <span id="current-user"></span>
+        </div>
+        <button class="header-btn" onclick="download()" title="Download document">
+          <i class="fas fa-download"></i>
+        </button>
+        <button class="header-btn theme-toggle" onclick="toggleTheme()" title="Toggle theme">
+          <i class="fas fa-moon"></i>
+        </button>
+      </div>
+    </header>
+
+    <!-- Main Content -->
+    <div id="main-content">
+      <!-- Sidebar -->
+      <aside id="sidebar">
+        <div class="sidebar-section">
+          <h3>
+            <i class="fas fa-users"></i>
+            Active Users
+            <span class="user-count" id="user-count">0</span>
+          </h3>
+          <ul id="user-list"></ul>
+        </div>
+        
+        <div class="sidebar-section">
+          <h3>
+            <i class="fas fa-clock"></i>
+            Activity
+          </h3>
+          <div id="activity-feed"></div>
+        </div>
+      </aside>
+
+      <!-- Editor Area -->
+      <main id="editor-area">
+        <div class="editor-toolbar">
+          <div class="toolbar-group">
+            <button class="toolbar-btn" onclick="formatText('bold')" title="Bold">
+              <i class="fas fa-bold"></i>
+            </button>
+            <button class="toolbar-btn" onclick="formatText('italic')" title="Italic">
+              <i class="fas fa-italic"></i>
+            </button>
+            <button class="toolbar-btn" onclick="formatText('underline')" title="Underline">
+              <i class="fas fa-underline"></i>
+            </button>
+          </div>
+          <div class="toolbar-separator"></div>
+          <div class="toolbar-group">
+            <button class="toolbar-btn" onclick="insertList()" title="Bullet List">
+              <i class="fas fa-list-ul"></i>
+            </button>
+            <button class="toolbar-btn" onclick="insertNumberedList()" title="Numbered List">
+              <i class="fas fa-list-ol"></i>
+            </button>
+          </div>
+          <div class="word-count">
+            <i class="fas fa-file-word"></i>
+            <span id="word-count">0 words</span>
+          </div>
+        </div>
+        
+        <div class="editor-wrapper">
+          <textarea id="editor" placeholder="Start typing your document here..."></textarea>
+          <div class="editor-cursor-indicators" id="cursor-indicators"></div>
+        </div>
+        
+        <div id="status-bar">
+          <div class="status-left">
+            <div class="typing-indicator" id="typing-indicator"></div>
+          </div>
+          <div class="status-right">
+            <span class="connection-status online">
+              <i class="fas fa-circle"></i>
+              Connected
+            </span>
+          </div>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <!-- Notification Container -->
+  <div id="notification-container"></div>
+
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
